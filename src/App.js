@@ -20,6 +20,22 @@ const App = () => {
     resposta: 0
   });
 
+  const onClickNumero = e => {
+    const valor = e.target.innerHTML;
+
+    e.preventDefault();
+
+    if (calc.numero.length < 16) {
+      setCalc({
+        ...calc,
+        num: calc.numero === 0 && valor === "0" ? "0" :
+          calc.numero % 1 === 0 ? Number(calc.numero + valor) :
+          calc.numero + valor,
+        resposta: !calc.sinal ? 0 : calc.resposta
+      })
+    }
+  };
+
   return (
     <div className="App">
       <Container>
@@ -32,9 +48,14 @@ const App = () => {
                   key={index}
                   className={botao === "=" ? "igual" : ""}
                   valor={botao}
-                  onClick={() => {
-                    console.log(`${botao} clicado`);
-                  }}
+                  onClick={
+                    botao === "C" ? onClickResetaDisplay :
+                    botao === "+-" ? onClickInverteSinal :
+                    botao === "%" ? onClickPorcentagem :
+                    botao === "=" ? onClickIgual :
+                    botao === "/" || botao === "X" || botao === "-" || botao === "+" ? onClickSinal :
+                    botao === "." ? onClickPonto : onClickNumero
+                  }
                 />
               );
             })
