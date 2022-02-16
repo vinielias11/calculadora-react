@@ -7,7 +7,7 @@ import Display from './components/Display/Display';
 
 const valoresParaOsBotoes = [
   ["C", "+-", "%", "/"],
-  [7, 8, 9, "X"],
+  [7, 8, 9, "x"],
   [4, 5, 6, "-"],
   [1, 2, 3, "+"],
   [0, ".", "="]
@@ -133,7 +133,7 @@ const App = () => {
                     botao === "+-" ? onClickInverteSinal :
                     botao === "%" ? onClickPorcentagem :
                     botao === "=" ? onClickIgual :
-                    botao === "/" || botao === "X" || botao === "-" || botao === "+" ? onClickSinal :
+                    botao === "/" || botao === "x" || botao === "-" || botao === "+" ? onClickSinal :
                     botao === "." ? onClickPonto : onClickNumero
                   }
                 />
