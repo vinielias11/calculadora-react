@@ -14,13 +14,18 @@ const valoresParaOsBotoes = [
 ];
 
 const App = () => {
-  const [calc, setCalc] = useState({
+  let [calc, setCalc] = useState({
     sinal: "",
     numero: 0,
     resposta: 0
   });
 
-  const onClickNumero = e => {
+  const converteParaString = (num) =>
+    String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
+
+  const removerEspacos = (num) => num.toString().replace(/\s/g, "");
+
+  const onClickNumero = (e) => {
     e.preventDefault();
     
     const valor = e.target.innerHTML;
@@ -28,11 +33,11 @@ const App = () => {
     if (removerEspacos(calc.numero).length < 16) {
       setCalc({
         ...calc,
-        num: calc.numero === 0 && valor === "0" 
-        ? "0" 
-        : removerEspacos(calc.numero) % 1 === 0 
-        ? converteParaString(Number(removerEspacos(calc.numero + valor))) :
-          converteParaString(calc.numero + valor),
+        numero: calc.numero === 0 && valor === "0" 
+          ? "0" 
+          : removerEspacos(calc.numero) % 1 === 0 
+          ? converteParaString(Number(removerEspacos(calc.numero + valor))) :
+            converteParaString(calc.numero + valor),
         resposta: !calc.sinal ? 0 : calc.resposta
       })
     }
@@ -111,10 +116,6 @@ const App = () => {
     });
   };
 
-  const converteParaString = num =>
-    String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
-
-  const removerEspacos = num => num.toString().replace(/\s/g, "");
 
   return (
       <Container>
