@@ -47,7 +47,7 @@ const App = () => {
     });
   };
 
-  onClickSinal = e => {
+  const onClickSinal = e => {
     const valor = e.target.innerHTML;
 
     e.preventDefault();
@@ -58,7 +58,56 @@ const App = () => {
       resposta: !calc.resposta && calc.numero ? calc.numero : calc.resposta,
       numero: 0
     });
-  }
+  };
+  
+  const onClickIgual = () => {
+    if (calc.sinal && calc.numero) {
+      const operacao = (a, b, sinal) => 
+        sinal === "+" ? a + b :
+        sinal === "-" ? a - b :
+        sinal === "X" ? a * b :
+        a / b;
+
+        setCalc({
+          ...calc,
+          resposta:
+            calc.numero === "0" && calc.sinal === "/" ? "Operação inválida" :
+            operacao(Number(calc.resposta), Number(calc.numero), calc.sinal),
+          sinal: '',
+          numero: 0
+        });
+    }
+  };
+
+  const onClickInverteSinal = () => {
+    setCalc({
+      ...calc,
+      numero: calc.numero ? calc.numero * -1 : 0,
+      resposta: calc.resposta ? calc.resposta * -1 : 0,
+      sinal: ''
+    });
+  };
+
+  const onClickPorcentagem = () => {
+    let num = calc.numero ? parseFloat(calc.numero) : 0,
+      res = calc.resposta ? parseFloat(calc.resposta) : 0;
+    
+    setCalc({
+      ...calc,
+      numero: (num /= Math.pow(100, 1)),
+      resposta: (res /= Math.pow(100, 1)),
+      sinal: ''
+    });
+  };
+
+  const onClickResetaDisplay = () => {
+    setCalc({
+      ...calc,
+      sinal: '',
+      numero: 0,
+      resposta: 0
+    });
+  };
 
   return (
     <div className="App">
