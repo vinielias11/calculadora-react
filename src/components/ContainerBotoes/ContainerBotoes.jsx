@@ -1,3 +1,4 @@
+import React from 'react';
 import './ContainerBotoes.css';
 
 const ContainerBotoes = ({ children }) => {

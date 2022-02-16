@@ -15,31 +15,33 @@ const valoresParaOsBotoes = [
 
 const App = () => {
   const [calc, setCalc] = useState({
-    sinal: '',
+    sinal: "",
     numero: 0,
     resposta: 0
   });
 
   const onClickNumero = e => {
+    e.preventDefault();
+    
     const valor = e.target.innerHTML;
 
-    e.preventDefault();
-
-    if (calc.numero.length < 16) {
+    if (removerEspacos(calc.numero).length < 16) {
       setCalc({
         ...calc,
-        num: calc.numero === 0 && valor === "0" ? "0" :
-          calc.numero % 1 === 0 ? Number(calc.numero + valor) :
-          calc.numero + valor,
+        num: calc.numero === 0 && valor === "0" 
+        ? "0" 
+        : removerEspacos(calc.numero) % 1 === 0 
+        ? converteParaString(Number(removerEspacos(calc.numero + valor))) :
+          converteParaString(calc.numero + valor),
         resposta: !calc.sinal ? 0 : calc.resposta
       })
     }
   };
 
   const onClickPonto = e => {
-    const valor = e.target.innerHTML;
-
     e.preventDefault();
+    
+    const valor = e.target.innerHTML;
 
     setCalc({
       ...calc,
@@ -48,9 +50,9 @@ const App = () => {
   };
 
   const onClickSinal = e => {
-    const valor = e.target.innerHTML;
-
     e.preventDefault();
+    
+    const valor = e.target.innerHTML;
 
     setCalc({
       ...calc,
@@ -72,7 +74,7 @@ const App = () => {
           ...calc,
           resposta:
             calc.numero === "0" && calc.sinal === "/" ? "Operação inválida" :
-            operacao(Number(calc.resposta), Number(calc.numero), calc.sinal),
+            converteParaString(operacao(Number(removerEspacos(calc.resposta)), Number(removerEspacos(calc.numero)), calc.sinal)),
           sinal: '',
           numero: 0
         });
@@ -82,35 +84,39 @@ const App = () => {
   const onClickInverteSinal = () => {
     setCalc({
       ...calc,
-      numero: calc.numero ? calc.numero * -1 : 0,
-      resposta: calc.resposta ? calc.resposta * -1 : 0,
-      sinal: ''
+      numero: calc.numero ? converteParaString(removerEspacos(calc.numero) * -1) : 0,
+      resposta: calc.resposta ? converteParaString(removerEspacos(calc.resposta) * -1) : 0,
+      sinal: ""
     });
   };
 
   const onClickPorcentagem = () => {
-    let num = calc.numero ? parseFloat(calc.numero) : 0,
-      res = calc.resposta ? parseFloat(calc.resposta) : 0;
+    let num = calc.numero ? parseFloat(removerEspacos(calc.numero)) : 0;
+    let res = calc.resposta ? parseFloat(removerEspacos(calc.resposta)) : 0;
     
     setCalc({
       ...calc,
       numero: (num /= Math.pow(100, 1)),
       resposta: (res /= Math.pow(100, 1)),
-      sinal: ''
+      sinal: ""
     });
   };
 
   const onClickResetaDisplay = () => {
     setCalc({
       ...calc,
-      sinal: '',
+      sinal: "",
       numero: 0,
       resposta: 0
     });
   };
 
+  const converteParaString = num =>
+    String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
+
+  const removerEspacos = num => num.toString().replace(/\s/g, "");
+
   return (
-    <div className="App">
       <Container>
         <Display valor={calc.numero ? calc.numero : calc.resposta}/>
         <ContainerBotoes>
@@ -135,7 +141,6 @@ const App = () => {
           }
         </ContainerBotoes>
       </Container>
-    </div>
   );
 }
 
