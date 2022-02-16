@@ -36,6 +36,30 @@ const App = () => {
     }
   };
 
+  const onClickPonto = e => {
+    const valor = e.target.innerHTML;
+
+    e.preventDefault();
+
+    setCalc({
+      ...calc,
+      numero: !calc.numero.toString().includes(".") ? calc.numero + valor : calc.numero
+    });
+  };
+
+  onClickSinal = e => {
+    const valor = e.target.innerHTML;
+
+    e.preventDefault();
+
+    setCalc({
+      ...calc,
+      sinal: valor,
+      resposta: !calc.resposta && calc.numero ? calc.numero : calc.resposta,
+      numero: 0
+    });
+  }
+
   return (
     <div className="App">
       <Container>
